@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Avatares</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  #avatar-container {
+    width: 200px;
+    height: 200px;
+  }
+</style>
+</head>
+<body>
+  <div>
+    <input type="text" id="input-text" placeholder="Digite seu nome">
+    <div id="avatar-container"></div>
+  </div>
+
+  <script>
+    // Função de hash para converter uma string em um número
+    function hashCode(str) {
+      var hash = 0;
+      if (str.length === 0) return hash;
+      for (var i = 0; i < str.length; i++) {
+        var char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return Math.abs(hash);
+    }
+
+    // Função para gerar o avatar
+    function gerarAvatar(nome) {
+      const avatarContainer = document.getElementById('avatar-container');
+      avatarContainer.innerHTML = ''; // Limpar avatar anterior
+
+      // Calcular o valor de hash do nome digitado
+      const hash = hashCode(nome);
+
+      // Escolher características do avatar baseadas no hash
+      const rosto = hash % 220; // 6 diferentes rostos
+      
+
+      // Criar o SVG do avatar
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('width', '200');
+      svg.setAttribute('height', '200');
+
+      
+
+      // Rosto
+      const rostos = ['🐶', '🐱', '🐭', '🐹', '🐰', '🐻', '🧸', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐽', '🐸', '🐵', '🙈', '🙉', '🙊', '🐒', '🦍', '🦧', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🐺', '🦊', '🦝', '🐗', '🐴', '🦓', '🦒', '🦌', '🦘', '🦥', '🦦', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🦗', '🕷', '🕸', '🦂', '🦟', '🦠', '🐢', '🐍', '🦎', '🐙', '🦑', '🦞', '🦀', '🦐', '🦪', '🐠', '🐟', '🐡', '🐬', '🦈', '🐳', '🐋', '🐊', '🐆', '🐅', '🐃', '🐂', '🐄', '🐪', '🐫', '🦙', '🐘', '🦏', '🦛', '🐐', '🐏', '🐑', '🐎', '🐖', '🦇', '🐓', '🦃', '🕊', '🦅', '🦆', '🦢', '🦉', '🦩', '🦚', '🦜', '🐕', '🦮', '🐕‍🦺', '🐩', '🐈', '🐇', '🐀', '🐁', '🐿', '🦨', '🦡', '🦔', '🐾', '🐉', '🐲', '🦕', '🦖', '🌵', '🎄', '🌲', '🌳', '🌴', '🌱', '🌿', '☘', '🍀', '🎍', '🎋', '🍃', '🍂', '🍁', '🌾', '🌺', '🌻', '🌹', '🥀', '🌷', '🌼', '🌸', '💐', '🍄', '🌰', '🐚', '🌎', '🌍', '🌏', '🌕', '🌖', '🌗', '🌘', '🌑', '🌒', '🌓', '🌔', '🌙', '🌚', '🌝', '🌛', '🌜', '⭐', '🌟', '💫', '✨', '☄', '🪐', '🌞', '☀', '🌤', '⛅', '🌥', '🌦', '☁', '🌧', '⛈', '🌩', '⚡', '🔥', '💥', '❄', '🌨', '☃', '⛄', '🌬', '💨', '🌪', '🌫', '🌈', '☔', '💧', '💦', '🌊'
+];
+      const rostoText = document.createElementNS(svgNS, 'text');
+      rostoText.setAttribute('x', '50%');
+      rostoText.setAttribute('y', '40%');
+      rostoText.setAttribute('text-anchor', 'middle');
+      rostoText.setAttribute('font-size', '50');
+      rostoText.textContent = rostos[rosto];
+
+    
+
+      // Adicionar elementos ao SVG
+      svg.appendChild(rostoText);
+      
+
+      // Adicionar SVG ao contêiner do avatar
+      avatarContainer.appendChild(svg);
+    }
+
+    // Adicionar evento de input para o campo de texto
+    document.getElementById('input-text').addEventListener('input', function() {
+      const nome = this.value.trim();
+      gerarAvatar(nome);
+    });
+  </script>
+</body>
+</html>
