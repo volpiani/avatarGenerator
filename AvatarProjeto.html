@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Avatar</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #avatar-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            background-color: white;
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .shape {
+            position: absolute;
+        }
+        .circle {
+            border-radius: 50%;
+        }
+        .square {
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" id="input-text" placeholder="Escreva seu nome">
+        <div id="avatar-container"></div>
+    </div>
+
+    <script>
+        // Função de hash para converter uma string em um número
+        function hashCode(str) {
+            var hash = 0;
+            if (str.length === 0) return hash;
+            for (var i = 0; i < str.length; i++) {
+                var char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return Math.abs(hash);
+        }
+
+        document.getElementById('input-text').addEventListener('input', function() {
+            const text = this.value;
+            const container = document.getElementById('avatar-container');
+            container.innerHTML = ''; // Clear previous shapes
+
+            // Calcula o valor de hash da palavra digitada
+            var hash = hashCode(text);
+
+            for (let i = 0; i < text.length; i++) {
+                // Use o valor de hash para determinar o tipo de forma, cor e posição
+                const shapeIndex = hash % 6; // Existem 3 tipos de formas
+                const colorIndex = hash % 7; // Existem 7 cores
+                const x = hash % 250;
+                const y = hash % 250;
+                
+                const shapes = ['circle', 'square', 'triangle'];
+                const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A8', '#33FFD7', '#FFD733'];
+
+                const shapeType = shapes[shapeIndex];
+                const color = colors[colorIndex];
+
+                const shape = document.createElement('div');
+                shape.classList.add('shape', shapeType);
+                shape.style.backgroundColor = color;
+                shape.style.left = x + 'px';
+                shape.style.top = y + 'px';
+
+                if (shapeType === 'circle') {
+                    shape.style.width = '50px';
+                    shape.style.height = '50px';
+                } else if (shapeType === 'square') {
+                    shape.style.width = '50px';
+                    shape.style.height = '50px';
+                } else if (shapeType === 'triangle') {
+                    shape.style.borderBottomColor = color;
+                }
+
+                container.appendChild(shape);
+
+                // Atualiza o valor de hash com base no caractere atual
+                hash = hashCode(hash.toString() + text.charCodeAt(i));
+            }
+        });
+    </script>
+</body>
+</html>
